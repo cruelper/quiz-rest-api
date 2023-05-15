@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.6'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'ru.nuykin'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    springBootStarterDataJpaVersion = '3.0.5'
+    springBootDebToolsVersion = '3.0.2'
+    springBootStarterTestVersion = '3.0.5'
+    liquibaseVersion = '4.21.1'
+    lombokVersion = '1.18.24'
+    postgreSQLDriverVersion = '42.6.0'
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootStarterDataJpaVersion"
+    implementation "org.liquibase:liquibase-core:$liquibaseVersion"
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    developmentOnly "org.springframework.boot:spring-boot-devtools:$springBootDebToolsVersion"
+    runtimeOnly "org.postgresql:postgresql:$postgreSQLDriverVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootStarterTestVersion"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
