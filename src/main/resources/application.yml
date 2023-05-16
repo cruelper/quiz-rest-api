@@ -1,1 +1,15 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/quizdb
+    username: user
+    password: password
+  liquibase:
+    url: jdbc:postgresql://localhost:5432/quizdb
+    user: user
+    password: password
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none

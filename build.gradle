@@ -19,21 +19,31 @@ repositories {
 }
 
 ext {
-    springBootStarterDataJpaVersion = '3.0.5'
+    springBootStarterWebFlux = '3.0.5'
+    springBootStarterDataR2DBCVersion = '3.0.5'
+    springBootStarterDataJPAVersion = '3.0.5'
     springBootDebToolsVersion = '3.0.2'
     springBootStarterTestVersion = '3.0.5'
     liquibaseVersion = '4.21.1'
     lombokVersion = '1.18.24'
-    postgreSQLDriverVersion = '42.6.0'
+    R2DBCPostgreSQLDriverVersion = '0.8.10.RELEASE'
+    JDBCPostgreSQLDriverVersion = '42.5.1'
 }
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootStarterDataJpaVersion"
+    implementation "org.springframework.boot:spring-boot-starter-webflux:$springBootStarterWebFlux"
+
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:"
+    implementation "org.springframework.boot:spring-boot-starter-data-r2dbc:$springBootStarterDataR2DBCVersion"
     implementation "org.liquibase:liquibase-core:$liquibaseVersion"
+    implementation "org.postgresql:postgresql:$JDBCPostgreSQLDriverVersion"
+    runtimeOnly "io.r2dbc:r2dbc-postgresql:$R2DBCPostgreSQLDriverVersion"
+
     compileOnly "org.projectlombok:lombok:$lombokVersion"
-    developmentOnly "org.springframework.boot:spring-boot-devtools:$springBootDebToolsVersion"
-    runtimeOnly "org.postgresql:postgresql:$postgreSQLDriverVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    developmentOnly "org.springframework.boot:spring-boot-devtools:$springBootDebToolsVersion"
+
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootStarterTestVersion"
 }
 

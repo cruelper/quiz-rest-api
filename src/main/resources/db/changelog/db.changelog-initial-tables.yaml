@@ -1,0 +1,91 @@
+databaseChangeLog:
+  - changeSet:
+      id: initialTables
+      author: andrey-nuykin
+      changes:
+        - createTable:
+            tableName: quiz_category
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+        - createTable:
+            tableName: quiz_difficulty
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: level
+                  type: smallint
+                  constraints:
+                    nullable: false
+                    unique: true
+        - createTable:
+            tableName: quiz_question
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: text
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: difficulty_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: quiz_answer
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: question_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: isCorrect
+                  type: bool
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: renameIsCorrectColuml
+      author: andrey nuykin
+      changes:
+        - renameColumn:
+            tableName: quiz_answer
+            oldColumnName: isCorrect
+            newColumnName: is_correct
