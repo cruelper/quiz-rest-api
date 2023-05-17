@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import ru.nuykin.quizrestapi.exception.ObjectNotFoundException;
 import ru.nuykin.quizrestapi.model.QuizCategory;
 import ru.nuykin.quizrestapi.repository.QuizCategoryRepository;
 import ru.nuykin.quizrestapi.service.QuizAnswerService;
@@ -21,12 +22,13 @@ public class QuizCategoryServiceImpl implements QuizCategoryService {
 
     @Override
     public Mono<QuizCategory> findById(int id) {
-        return quizCategoryRepository.findById(id);
+        return quizCategoryRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ObjectNotFoundException(QuizCategory.class, (long) id)));
     }
 
     @Override
     public Mono<QuizCategory> save(QuizCategory quizCategory) {
-        return null;
+        return quizCategoryRepository.save(quizCategory);
     }
 
     @Override

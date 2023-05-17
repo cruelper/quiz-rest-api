@@ -20,6 +20,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class QuizDifficulty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column("id")
     private Integer id;
 
     @Column("level")

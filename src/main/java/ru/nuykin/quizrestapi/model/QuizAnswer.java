@@ -17,6 +17,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class QuizAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column("id")
     private Long id;
 
     @Column("text")
