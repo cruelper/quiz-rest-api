@@ -8,7 +8,7 @@ import ru.nuykin.quizrestapi.model.QuizDifficulty;
 import ru.nuykin.quizrestapi.service.QuizDifficultyService;
 
 @RestController
-@RequestMapping(value = "/difficulty")
+@RequestMapping( "/difficulty")
 @RequiredArgsConstructor
 public class QuizDifficultyController {
     private final QuizDifficultyService quizDifficultyService;
