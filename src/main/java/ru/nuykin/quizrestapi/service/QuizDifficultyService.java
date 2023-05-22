@@ -12,7 +12,7 @@ public interface QuizDifficultyService {
 
     public Mono<QuizDifficulty> save(QuizDifficulty quizDifficulty);
 
-    public Mono<QuizDifficulty> update(QuizDifficulty quizDifficulty);
+    public Mono<QuizDifficulty> update(int id, QuizDifficulty quizDifficulty);
 
     public Mono<Void> deleteById(int id);
 }

@@ -8,11 +8,12 @@ import ru.nuykin.quizrestapi.model.QuizCategory;
 public interface QuizAnswerService {
     public Flux<QuizAnswer> findAll();
 
-    public Mono<QuizAnswer> findById(int id);
+    public Mono<QuizAnswer> findById(long id);
+    public Flux<QuizAnswer> findByQuizQuestionId(long id);
 
     public Mono<QuizAnswer> save(QuizAnswer quizAnswer);
 
-    public Mono<QuizAnswer> update(QuizAnswer quizAnswer);
+    public Mono<QuizAnswer> update(long id, QuizAnswer quizAnswer);
 
-    public Mono<Void> deleteById(int id);
+    public Mono<Void> deleteById(long id);
 }

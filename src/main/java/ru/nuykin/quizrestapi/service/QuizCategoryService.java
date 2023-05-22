@@ -11,7 +11,7 @@ public interface QuizCategoryService {
 
     public Mono<QuizCategory> save(QuizCategory quizCategory);
 
-    public Mono<QuizCategory> update(QuizCategory quizCategory);
+    public Mono<QuizCategory> update(int id, QuizCategory quizCategory);
 
     public Mono<Void> deleteById(int id);
 }

@@ -1,19 +1,17 @@
 package ru.nuykin.quizrestapi.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
-@Table(name = "quiz_answer")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Data
+@Builder(toBuilder = true)
+@Table(name = "quiz_answer")
 public class QuizAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +21,9 @@ public class QuizAnswer {
     @Column("text")
     private String text;
 
-    @Column("isCorrect")
+    @Column("is_correct")
     private Boolean isCorrect;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_id", referencedColumnName = "id", nullable = false)
-    private QuizQuestion quizQuestion;
+    @Column("question_id")
+    private Long quizQuestionId;
 }

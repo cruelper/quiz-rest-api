@@ -4,12 +4,12 @@ server:
 spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/quizdb
-    username: admin
-    password: admin
+    username: user
+    password: password
   liquibase:
     url: jdbc:postgresql://localhost:5432/quizdb
-    user: admin
-    password: admin
+    user: user
+    password: password
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
   jpa:
