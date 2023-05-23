@@ -31,6 +31,11 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
     }
 
     @Override
+    public Mono<QuizQuestion> findRandom() {
+        return quizQuestionRepository.getRandomQuestion();
+    }
+
+    @Override
     public Mono<QuizQuestion> save(QuizQuestion quizQuestion) {
         return quizQuestionRepository.save(quizQuestion);
     }

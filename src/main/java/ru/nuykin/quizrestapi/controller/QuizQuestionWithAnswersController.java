@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.nuykin.quizrestapi.dto.QuizQuestionWithAnswersDto;
+import ru.nuykin.quizrestapi.dto.request.QuizCheckQuestionAnswerRequest;
+import ru.nuykin.quizrestapi.dto.response.QuizCheckQuestionAnswerResponse;
+import ru.nuykin.quizrestapi.mapper.QuizAnswerMapper;
 import ru.nuykin.quizrestapi.mapper.QuizQuestionWithAnswersMapper;
+import ru.nuykin.quizrestapi.model.QuizAnswer;
 import ru.nuykin.quizrestapi.service.QuizQuestionWithAnswersService;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -17,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 public class QuizQuestionWithAnswersController {
     private final QuizQuestionWithAnswersService quizQuestionWithAnswersService;
     private final QuizQuestionWithAnswersMapper quizQuestionWithAnswersMapper;
+    private final QuizAnswerMapper quizAnswerMapper;
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
@@ -31,6 +37,29 @@ public class QuizQuestionWithAnswersController {
                 .map(quizQuestionWithAnswersMapper::fromModelToDto);
     }
 
+    @GetMapping("/random")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<QuizQuestionWithAnswersDto> findRandom() {
+        return quizQuestionWithAnswersService.findRandom()
+                .map(quizQuestionWithAnswersMapper::fromModelToDto);
+    }
+
+    @PostMapping("/check")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<QuizCheckQuestionAnswerResponse> checkAnswer(@RequestBody QuizCheckQuestionAnswerRequest sendAnswer) {
+        return quizQuestionWithAnswersService.checkAnswer(QuizAnswer.builder()
+                .quizQuestionId(sendAnswer.getQuestionId())
+                .id(sendAnswer.getQuizAnswer().getId())
+                .build()
+        ).map(correctQuizAnswer -> QuizCheckQuestionAnswerResponse.builder()
+                .question_id(sendAnswer.getQuestionId())
+                .isCorrect(Objects.equals(correctQuizAnswer.getId(), sendAnswer.getQuizAnswer().getId()))
+                .yourQuizAnswer(sendAnswer.getQuizAnswer())
+                .correctQuizAnswer(quizAnswerMapper.fromModelToDto(correctQuizAnswer))
+                .build()
+        );
+    }
+
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<QuizQuestionWithAnswersDto> create(@RequestBody QuizQuestionWithAnswersDto quizQuestionWithAnswersDto) throws ExecutionException, InterruptedException {
@@ -41,7 +70,7 @@ public class QuizQuestionWithAnswersController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<QuizQuestionWithAnswersDto> update(@PathVariable int id, @RequestBody QuizQuestionWithAnswersDto quizQuestionWithAnswersDto) {
+    public Mono<QuizQuestionWithAnswersDto> update(@PathVariable int id, @RequestBody QuizQuestionWithAnswersDto quizQuestionWithAnswersDto) throws ExecutionException, InterruptedException {
         return quizQuestionWithAnswersService.update(
                 id, quizQuestionWithAnswersMapper.fromDtoToModel(quizQuestionWithAnswersDto)
         ).map(quizQuestionWithAnswersMapper::fromModelToDto);

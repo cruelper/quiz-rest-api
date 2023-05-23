@@ -10,10 +10,13 @@ public interface QuizAnswerService {
 
     public Mono<QuizAnswer> findById(long id);
     public Flux<QuizAnswer> findByQuizQuestionId(long id);
+    public Mono<QuizAnswer> findCorrectQuizAnswer(long questionId);
 
     public Mono<QuizAnswer> save(QuizAnswer quizAnswer);
 
     public Mono<QuizAnswer> update(long id, QuizAnswer quizAnswer);
 
     public Mono<Void> deleteById(long id);
+
+    public Mono<Void> deleteByQuizQuestionId(long id);
 }

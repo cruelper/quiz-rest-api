@@ -9,6 +9,7 @@ public interface QuizQuestionService {
     public Flux<QuizQuestion> findAll();
 
     public Mono<QuizQuestion> findById(long id);
+    public Mono<QuizQuestion> findRandom();
 
     public Mono<QuizQuestion> save(QuizQuestion quizQuestion);
 

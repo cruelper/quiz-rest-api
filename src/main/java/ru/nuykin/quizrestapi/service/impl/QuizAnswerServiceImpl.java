@@ -6,8 +6,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.nuykin.quizrestapi.mapper.QuizAnswerMapper;
 import ru.nuykin.quizrestapi.model.QuizAnswer;
-import ru.nuykin.quizrestapi.model.QuizAnswer;
-import ru.nuykin.quizrestapi.repository.QuizAnswerRepository;
 import ru.nuykin.quizrestapi.repository.QuizAnswerRepository;
 import ru.nuykin.quizrestapi.service.QuizAnswerService;
 
@@ -35,6 +33,11 @@ public class QuizAnswerServiceImpl implements QuizAnswerService {
     }
 
     @Override
+    public Mono<QuizAnswer> findCorrectQuizAnswer(long questionId) {
+        return quizAnswerRepository.findByQuizQuestionIdAndIsCorrect(questionId, true);
+    }
+
+    @Override
     public Mono<QuizAnswer> save(QuizAnswer quizAnswer) {
         return quizAnswerRepository.save(quizAnswer);
     }
@@ -51,5 +54,10 @@ public class QuizAnswerServiceImpl implements QuizAnswerService {
     @Override
     public Mono<Void> deleteById(long id) {
         return quizAnswerRepository.deleteById(id);
+    }
+
+    @Override
+    public Mono<Void> deleteByQuizQuestionId(long id) {
+        return quizAnswerRepository.deleteByQuizQuestionId(id);
     }
 }
