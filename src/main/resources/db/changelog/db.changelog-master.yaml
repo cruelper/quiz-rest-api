@@ -5,3 +5,5 @@ databaseChangeLog:
       file: classpath:db/changelog/db.changelog-v2-initial-references.yaml
   - include:
       file: classpath:db/changelog/db.changelog-v3-create-user-table.yaml
+  - include:
+      file: classpath:db/changelog/db.changelog-v4-create-game-table.yaml

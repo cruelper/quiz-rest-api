@@ -4,18 +4,21 @@ server:
 spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/quizdb
-    username: user
-    password: password
+    username: admin
+    password: admin
   liquibase:
     url: jdbc:postgresql://localhost:5432/quizdb
-    user: user
-    password: password
+    user: admin
+    password: admin
     change-log: classpath:db/changelog/db.changelog-master.yaml
-
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: none
+  data:
+    redis:
+      host: localhost
+      port: 6389
 
 jwt:
   encoder:

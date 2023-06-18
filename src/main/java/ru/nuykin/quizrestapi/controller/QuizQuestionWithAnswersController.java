@@ -8,6 +8,8 @@ import reactor.core.publisher.Mono;
 import ru.nuykin.quizrestapi.dto.QuizQuestionWithAnswersDto;
 import ru.nuykin.quizrestapi.dto.request.QuizCheckQuestionAnswerRequest;
 import ru.nuykin.quizrestapi.dto.response.QuizCheckQuestionAnswerResponse;
+import ru.nuykin.quizrestapi.jserviceio.FeignClient;
+import ru.nuykin.quizrestapi.jserviceio.JServiceIOService;
 import ru.nuykin.quizrestapi.mapper.QuizAnswerMapper;
 import ru.nuykin.quizrestapi.mapper.QuizQuestionWithAnswersMapper;
 import ru.nuykin.quizrestapi.model.QuizAnswer;
@@ -23,6 +25,7 @@ public class QuizQuestionWithAnswersController {
     private final QuizQuestionWithAnswersService quizQuestionWithAnswersService;
     private final QuizQuestionWithAnswersMapper quizQuestionWithAnswersMapper;
     private final QuizAnswerMapper quizAnswerMapper;
+    private final JServiceIOService jServiceIOService;
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
@@ -39,9 +42,12 @@ public class QuizQuestionWithAnswersController {
 
     @GetMapping("/random")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<QuizQuestionWithAnswersDto> findRandom() {
-        return quizQuestionWithAnswersService.findRandom()
-                .map(quizQuestionWithAnswersMapper::fromModelToDto);
+    public Mono<QuizQuestionWithAnswersDto> findRandom(@RequestParam(required = true) Integer count) {
+        if ((int)(Math.random()*100) % 2 == 0) {
+            return quizQuestionWithAnswersService.findRandom()
+                    .map(quizQuestionWithAnswersMapper::fromModelToDto);
+        }
+        return jServiceIOService.findRandom(1).last();
     }
 
     @PostMapping("/check")

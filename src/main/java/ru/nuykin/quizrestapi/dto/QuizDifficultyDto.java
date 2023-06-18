@@ -13,5 +13,5 @@ import org.springframework.data.relational.core.mapping.Column;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class QuizDifficultyDto {
     private Integer id;
-    private Short level;
+    private Integer level;
 }

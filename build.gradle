@@ -26,11 +26,17 @@ dependencies {
     implementation "javax.xml.bind:jaxb-api:$jaxbApiVersion"
     implementation "org.springframework.session:spring-session-core:$springSessionCoreVersion"
 
+    implementation "com.playtika.reactivefeign:feign-reactor-webclient:$reactiveFeignVersion"
+    implementation "com.playtika.reactivefeign:feign-reactor-spring-configuration:$reactiveFeignVersion"
+
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:"
     implementation "org.springframework.boot:spring-boot-starter-data-r2dbc:$springBootStarterDataR2DBCVersion"
     implementation "org.liquibase:liquibase-core:$liquibaseVersion"
     implementation "org.postgresql:postgresql:$JDBCPostgreSQLDriverVersion"
     runtimeOnly "io.r2dbc:r2dbc-postgresql:$R2DBCPostgreSQLDriverVersion"
+
+    implementation "org.springframework.boot:spring-boot-starter-data-redis-reactive:$springBootStarterDataRedis"
+    implementation "redis.clients:jedis:$jedisVersion"
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
@@ -40,6 +46,8 @@ dependencies {
 
     developmentOnly "org.springframework.boot:spring-boot-devtools:$springBootDebToolsVersion"
     implementation "com.google.code.findbugs:jsr305:$googleFindBugsVersion"
+
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.93.Final:osx-x86_64'
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootStarterTestVersion"
 }

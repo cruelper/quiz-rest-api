@@ -3,7 +3,9 @@ package ru.nuykin.quizrestapi.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
+import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -12,7 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class QuizQuestionWithAnswersDto {
+@RedisHash("QuizQuestionWithAnswersDto")
+public class QuizQuestionWithAnswersDto implements Serializable {
     private Long id;
     private String text;
     private QuizCategoryDto quizCategory;
