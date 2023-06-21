@@ -6,7 +6,7 @@ import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
-import ru.nuykin.quizrestapi.dto.QuizQuestionWithAnswersDto;
+import ru.nuykin.quizrestapi.dto.QuestionDto;
 
 @Configuration
 public class RedisConfig {
@@ -16,7 +16,7 @@ public class RedisConfig {
     ) {
         return new ReactiveRedisTemplate<>(factory,
                 RedisSerializationContext.fromSerializer(new Jackson2JsonRedisSerializer(
-                        QuizQuestionWithAnswersDto.class
+                        QuestionDto.class
                 )));
     }
 }
