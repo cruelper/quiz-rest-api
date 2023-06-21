@@ -25,8 +25,6 @@ databaseChangeLog:
               - column:
                   name: end_time
                   type: timestamp
-                  constraints:
-                    nullable: false
         - addForeignKeyConstraint:
             baseTableName: game
             baseColumnNames: user_id
@@ -37,20 +35,31 @@ databaseChangeLog:
             tableName: game_question
             columns:
               - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
                   name: game_id
                   type: bigint
                   constraints:
-                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: question_number
+                  type: int
+                  constraints:
+                    nullable: false
               - column:
                   name: question_id
                   type: int
                   constraints:
-                    primaryKey: true
+                    nullable: false
               - column:
                   name: question_source
                   type: text
                   constraints:
-                    primaryKey: true
+                    nullable: false
               - column:
                   name: is_correct_answer
                   type: bool
