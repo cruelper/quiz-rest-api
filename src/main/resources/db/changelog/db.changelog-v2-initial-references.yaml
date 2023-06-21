@@ -9,15 +9,3 @@ databaseChangeLog:
             referencedTableName: quiz_category
             referencedColumnNames: id
             constraintName: quiz_question_category_fk
-        - addForeignKeyConstraint:
-            baseTableName: quiz_question
-            baseColumnNames: difficulty_id
-            referencedTableName: quiz_difficulty
-            referencedColumnNames: id
-            constraintName: quiz_question_difficulty_fk
-        - addForeignKeyConstraint:
-            baseTableName: quiz_answer
-            baseColumnNames: question_id
-            referencedTableName: quiz_question
-            referencedColumnNames: id
-            constraintName: quiz_answer_question_fk

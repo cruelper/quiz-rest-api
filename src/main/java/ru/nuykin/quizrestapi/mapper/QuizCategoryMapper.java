@@ -4,16 +4,16 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import ru.nuykin.quizrestapi.dto.QuizCategoryDto;
-import ru.nuykin.quizrestapi.model.QuizCategory;
+import ru.nuykin.quizrestapi.dto.CategoryDto;
+import ru.nuykin.quizrestapi.model.Category;
 
 @Mapper(componentModel = "spring")
 public interface QuizCategoryMapper {
-    QuizCategoryDto fromModelToDto(QuizCategory quizCategory);
+    CategoryDto fromModelToDto(Category category);
 
     @InheritInverseConfiguration
-    QuizCategory fromDtoToModel(QuizCategoryDto quizCategoryDto);
+    Category fromDtoToModel(CategoryDto categoryDto);
 
     @Mapping(target = "id", ignore = true)
-    QuizCategory updateEntity(QuizCategory oldQuizCategory, @MappingTarget QuizCategory newQuizCategory);
+    Category updateEntity(Category oldCategory, @MappingTarget Category newCategory);
 }

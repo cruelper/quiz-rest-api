@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import ru.nuykin.quizrestapi.model.User;
 import ru.nuykin.quizrestapi.model.UserRole;
-import ru.nuykin.quizrestapi.repository.UserRepository;
+import ru.nuykin.quizrestapi.repository.db.UserRepository;
 import ru.nuykin.quizrestapi.service.UserService;
 
 import java.time.LocalDateTime;

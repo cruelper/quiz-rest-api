@@ -1,21 +1,24 @@
-package ru.nuykin.quizrestapi.dto.response;
+package ru.nuykin.quizrestapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.nuykin.quizrestapi.dto.QuizAnswerDto;
 
 @Data
-@Builder(toBuilder = true)
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class QuizCheckQuestionAnswerResponse {
-    private Long question_id;
+public class CheckQuestionAnswerDto {
+    private String yourAnswer;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean isCorrect;
-    private QuizAnswerDto correctQuizAnswer;
-    private QuizAnswerDto yourQuizAnswer;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String correctAnswer;
 }

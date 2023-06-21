@@ -5,50 +5,50 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.nuykin.quizrestapi.dto.QuizCategoryDto;
+import ru.nuykin.quizrestapi.dto.CategoryDto;
 import ru.nuykin.quizrestapi.mapper.QuizCategoryMapper;
-import ru.nuykin.quizrestapi.service.QuizCategoryService;
+import ru.nuykin.quizrestapi.service.CategoryService;
 
 @RestController
 @RequestMapping(value = "/category")
 @RequiredArgsConstructor
-public class QuizCategoryController {
-    private final QuizCategoryService quizCategoryService;
+public class CategoryController {
+    private final CategoryService categoryService;
     private final QuizCategoryMapper quizCategoryMapper;
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    public Flux<QuizCategoryDto> getAll() {
-        return quizCategoryService.findAll().map(quizCategoryMapper::fromModelToDto);
+    public Flux<CategoryDto> getAll() {
+        return categoryService.findAll().map(quizCategoryMapper::fromModelToDto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<QuizCategoryDto> findById(@PathVariable Integer id) {
-        return quizCategoryService.findById(id)
+    public Mono<CategoryDto> findById(@PathVariable Integer id) {
+        return categoryService.findById(id)
                 .map(quizCategoryMapper::fromModelToDto);
     }
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<QuizCategoryDto> create(@RequestBody QuizCategoryDto quizCategoryDto) {
-        return quizCategoryService.save(
-                quizCategoryMapper.fromDtoToModel(quizCategoryDto)
+    public Mono<CategoryDto> create(@RequestBody CategoryDto categoryDto) {
+        return categoryService.save(
+                quizCategoryMapper.fromDtoToModel(categoryDto)
         ).map(quizCategoryMapper::fromModelToDto);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<QuizCategoryDto> update(@PathVariable int id, @RequestBody QuizCategoryDto quizCategoryDto) {
-        return quizCategoryService.update(
-                id, quizCategoryMapper.fromDtoToModel(quizCategoryDto)
+    public Mono<CategoryDto> update(@PathVariable int id, @RequestBody CategoryDto categoryDto) {
+        return categoryService.update(
+                id, quizCategoryMapper.fromDtoToModel(categoryDto)
         ).map(quizCategoryMapper::fromModelToDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Mono<Void> delete(@PathVariable Integer id) {
-        return quizCategoryService.deleteById(id);
+        return categoryService.deleteById(id);
     }
 
 }

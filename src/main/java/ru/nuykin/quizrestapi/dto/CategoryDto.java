@@ -3,12 +3,7 @@ package ru.nuykin.quizrestapi.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
-import org.springframework.data.relational.core.mapping.Column;
-import ru.nuykin.quizrestapi.model.QuizQuestion;
 
 @Getter
 @Setter
@@ -16,9 +11,20 @@ import ru.nuykin.quizrestapi.model.QuizQuestion;
 @AllArgsConstructor
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class QuizAnswerDto {
-    private Long id;
-    private String text;
+public class CategoryDto {
+    private Integer id;
+
+    private String name;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isCorrect;
+    private String title;
+
+    public void setName(String name) {
+        this.name = name;
+        this.title = name;
+    }
+
+    public void setTitle(String title) {
+        this.name = title;
+        this.title = title;
+    }
 }
