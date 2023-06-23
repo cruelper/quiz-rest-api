@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.nuykin.quizrestapi.dto.QuestionDto;
@@ -12,20 +11,16 @@ import ru.nuykin.quizrestapi.dto.CheckQuestionAnswerDto;
 import ru.nuykin.quizrestapi.dto.request.GameStartRequestDto;
 import ru.nuykin.quizrestapi.dto.response.GameFinishResponseDto;
 import ru.nuykin.quizrestapi.dto.response.GameStartResponseDto;
-import ru.nuykin.quizrestapi.mapper.QuizQuestionMapper;
-import ru.nuykin.quizrestapi.model.Question;
+import ru.nuykin.quizrestapi.mapper.QuestionWithCategoryMapper;
 import ru.nuykin.quizrestapi.security.UserPrincipal;
 import ru.nuykin.quizrestapi.service.GameWithQuestionsService;
-
-import java.security.Principal;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(value = "/game")
 @RequiredArgsConstructor
 public class GameController {
     private final GameWithQuestionsService gameWithQuestionsService;
-    private final QuizQuestionMapper quizQuestionMapper;
+    private final QuestionWithCategoryMapper questionWithCategoryMapper;
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.OK)
@@ -39,9 +34,9 @@ public class GameController {
 
     @GetMapping("/{game_id}/{question_number}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<QuestionDto> getQuestion(@PathVariable Long game_id, @PathVariable Integer question_number) throws ExecutionException, InterruptedException {
+    public Mono<QuestionDto> getQuestion(@PathVariable Long game_id, @PathVariable Integer question_number) {
         return gameWithQuestionsService.getQuestion(game_id, question_number)
-                .map(quizQuestionMapper::fromModelToDto);
+                .map(questionWithCategoryMapper::fromModelToDto);
     }
 
     @PostMapping("/{game_id}/{question_number}/check")
@@ -51,7 +46,7 @@ public class GameController {
             @PathVariable Integer question_number,
             @RequestBody CheckQuestionAnswerDto answer
     ) {
-        return gameWithQuestionsService.checkQuestion(game_id, question_number, answer);
+        return gameWithQuestionsService.checkQuestion(game_id, question_number, answer).log();
     }
 
     @PostMapping("/{game_id}/finish")

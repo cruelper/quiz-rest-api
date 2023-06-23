@@ -19,7 +19,7 @@ public class JServiceService {
     public Flux<QuestionDto> findRandom(int count) {
         return jServiceFeignClient.getRandomQuestion(count)
                 .flatMap(questionDto -> {
-                    questionRedisCache.save(questionDto).subscribe();
+                    questionRedisCache.save(questionWithCategoryMapper.fromDtoToModel(questionDto)).subscribe();
                     return Mono.just(questionDto);
                 });
     }

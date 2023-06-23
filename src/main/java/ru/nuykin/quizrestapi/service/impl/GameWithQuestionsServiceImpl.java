@@ -7,11 +7,9 @@ import ru.nuykin.quizrestapi.dto.CheckQuestionAnswerDto;
 import ru.nuykin.quizrestapi.dto.request.GameStartRequestDto;
 import ru.nuykin.quizrestapi.dto.response.GameFinishResponseDto;
 import ru.nuykin.quizrestapi.dto.response.GameStartResponseDto;
+import ru.nuykin.quizrestapi.mapper.QuestionWithCategoryMapper;
 import ru.nuykin.quizrestapi.mapper.QuizQuestionMapper;
-import ru.nuykin.quizrestapi.model.Game;
-import ru.nuykin.quizrestapi.model.GameQuestion;
-import ru.nuykin.quizrestapi.model.Question;
-import ru.nuykin.quizrestapi.model.QuestionSource;
+import ru.nuykin.quizrestapi.model.*;
 import ru.nuykin.quizrestapi.repository.cache.QuestionRedisCache;
 import ru.nuykin.quizrestapi.service.*;
 
@@ -25,10 +23,10 @@ import java.util.stream.IntStream;
 public class GameWithQuestionsServiceImpl implements GameWithQuestionsService {
     private final GameService gameService;
     private final GameQuestionService gameQuestionService;
-    private final QuestionService questionService;
+    private final QuestionWithCategoryService questionWithCategoryService;
     private final JServiceService jServiceService;
     private final QuestionRedisCache questionRedisCache;
-    private final QuizQuestionMapper quizQuestionMapper;
+    private final QuestionWithCategoryMapper questionWithCategoryMapper;
 
     @Override
     public Mono<GameStartResponseDto> startGame(Long userId, GameStartRequestDto gameStartRequestDto) {
@@ -60,7 +58,7 @@ public class GameWithQuestionsServiceImpl implements GameWithQuestionsService {
 
     private Mono<Map.Entry<Long, QuestionSource>> getIdOfRandomQuestion() {
         if (Math.random() > 0.5) {
-            return questionService.findRandom().map(question -> Map.entry(question.getId(), QuestionSource.DB));
+            return questionWithCategoryService.findRandom().map(question -> Map.entry(question.getId(), QuestionSource.DB));
         }
         return jServiceService.findRandom(1).last().map(question ->
                 Map.entry(question.getId(), QuestionSource.JSERVICE
@@ -68,15 +66,12 @@ public class GameWithQuestionsServiceImpl implements GameWithQuestionsService {
     }
 
     @Override
-    public Mono<Question> getQuestion(Long gameId, Integer questionNumber) throws ExecutionException, InterruptedException {
+    public Mono<QuestionWithCategory> getQuestion(Long gameId, Integer questionNumber) {
         return gameQuestionService.findByGameIdAndQuestionNumber(gameId, questionNumber).flatMap(gameQuestion -> {
             if (gameQuestion.getQuestionSource() == QuestionSource.DB) {
-                return questionService.findById(gameQuestion.getQuestionId());
+                return questionWithCategoryService.findById(gameQuestion.getQuestionId()).log();
             } else {
-                var id = gameQuestion.getQuestionId();
-
-                return questionRedisCache.findById(gameQuestion.getQuestionId())
-                        .map(quizQuestionMapper::fromDtoToModel);
+                return questionRedisCache.findById(gameQuestion.getQuestionId()).log();
             }
         });
     }
@@ -89,7 +84,7 @@ public class GameWithQuestionsServiceImpl implements GameWithQuestionsService {
     ) {
         return gameQuestionService.findByGameIdAndQuestionNumber(gameId, questionNumber).flatMap(gameQuestion -> {
             if (gameQuestion.getQuestionSource() == QuestionSource.DB) {
-                return questionService.findById(gameQuestion.getQuestionId())
+                return questionWithCategoryService.findById(gameQuestion.getQuestionId())
                         .map(question -> {
                                     gameQuestion.setIsCorrectAnswer(question.getAnswer().equals(answer.getYourAnswer()));
                                     gameQuestionService.save(gameQuestion);

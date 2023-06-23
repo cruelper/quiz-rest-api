@@ -8,13 +8,14 @@ import ru.nuykin.quizrestapi.dto.request.GameStartRequestDto;
 import ru.nuykin.quizrestapi.dto.response.GameFinishResponseDto;
 import ru.nuykin.quizrestapi.dto.response.GameStartResponseDto;
 import ru.nuykin.quizrestapi.model.Question;
+import ru.nuykin.quizrestapi.model.QuestionWithCategory;
 
 import java.util.concurrent.ExecutionException;
 
 public interface GameWithQuestionsService {
     public Mono<GameStartResponseDto> startGame(Long userId, GameStartRequestDto gameStartRequestDto);
 
-    public Mono<Question> getQuestion(Long gameId, Integer questionNumber) throws ExecutionException, InterruptedException;
+    public Mono<QuestionWithCategory> getQuestion(Long gameId, Integer questionNumber);
 
     public Mono<CheckQuestionAnswerDto> checkQuestion(
             Long game_id,
