@@ -1,10 +1,10 @@
 package ru.nuykin.quizrestapi.model;
 
 import lombok.*;
+import reactor.util.annotation.NonNull;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class QuestionWithCategory {

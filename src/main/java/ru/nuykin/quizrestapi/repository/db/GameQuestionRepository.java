@@ -9,4 +9,6 @@ import ru.nuykin.quizrestapi.model.GameQuestion;
 @Repository
 public interface GameQuestionRepository extends R2dbcRepository<GameQuestion, Long> {
     public Flux<GameQuestion> findAllByGameIdAndNumber(Long gameId, Integer number, Sort sort);
+
+    public Flux<GameQuestion> findAllByGameId(Long gameId, Sort sort);
 }

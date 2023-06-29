@@ -11,6 +11,7 @@ import ru.nuykin.quizrestapi.dto.CheckQuestionAnswerDto;
 import ru.nuykin.quizrestapi.dto.request.GameStartRequestDto;
 import ru.nuykin.quizrestapi.dto.response.GameFinishResponseDto;
 import ru.nuykin.quizrestapi.dto.response.GameStartResponseDto;
+import ru.nuykin.quizrestapi.exception.NotFoundException;
 import ru.nuykin.quizrestapi.mapper.QuestionWithCategoryMapper;
 import ru.nuykin.quizrestapi.security.UserPrincipal;
 import ru.nuykin.quizrestapi.service.GameWithQuestionsService;
@@ -34,9 +35,15 @@ public class GameController {
 
     @GetMapping("/{game_id}/{question_number}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<QuestionDto> getQuestion(@PathVariable Long game_id, @PathVariable Integer question_number) {
-        return gameWithQuestionsService.getQuestion(game_id, question_number)
-                .map(questionWithCategoryMapper::fromModelToDto);
+    public Mono<QuestionDto> getQuestion(
+            @PathVariable Long game_id, @PathVariable Integer question_number,
+            @AuthenticationPrincipal Mono<Authentication> principal
+    ) {
+        return principal.map(user -> ((UserPrincipal)user.getPrincipal()).getId())
+                .flatMap(userId -> gameWithQuestionsService.getQuestion(userId, game_id, question_number)
+                        .map(questionWithCategoryMapper::fromModelToDto)
+                );
+
     }
 
     @PostMapping("/{game_id}/{question_number}/check")
@@ -44,15 +51,21 @@ public class GameController {
     public Mono<CheckQuestionAnswerDto> checkQuestion(
             @PathVariable Long game_id,
             @PathVariable Integer question_number,
-            @RequestBody CheckQuestionAnswerDto answer
+            @RequestBody CheckQuestionAnswerDto answer,
+            @AuthenticationPrincipal Mono<Authentication> principal
     ) {
-        return gameWithQuestionsService.checkQuestion(game_id, question_number, answer).log();
+        return principal.map(user -> ((UserPrincipal)user.getPrincipal()).getId())
+                .flatMap(userId -> gameWithQuestionsService.checkQuestion(userId,game_id, question_number, answer));
     }
 
     @PostMapping("/{game_id}/finish")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<GameFinishResponseDto> finishGame(@PathVariable Long game_id) {
-        return gameWithQuestionsService.finishGame(game_id);
+    public Mono<GameFinishResponseDto> finishGame(
+            @PathVariable Long game_id,
+            @AuthenticationPrincipal Mono<Authentication> principal
+    ) {
+        return principal.map(user -> ((UserPrincipal)user.getPrincipal()).getId())
+                .flatMap(userId -> gameWithQuestionsService.finishGame(userId, game_id));
     }
 
 }

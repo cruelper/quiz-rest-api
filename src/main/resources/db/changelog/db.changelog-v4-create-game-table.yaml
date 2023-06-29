@@ -65,6 +65,11 @@ databaseChangeLog:
                   type: bool
                   constraints:
                     nullable: false
+              - column:
+                  name: is_answer_given
+                  type: bool
+                  constraints:
+                    nullable: false
         - addForeignKeyConstraint:
             baseTableName: game_question
             baseColumnNames: game_id

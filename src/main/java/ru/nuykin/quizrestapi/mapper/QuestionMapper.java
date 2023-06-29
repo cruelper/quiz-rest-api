@@ -8,7 +8,7 @@ import ru.nuykin.quizrestapi.dto.QuestionDto;
 import ru.nuykin.quizrestapi.model.Question;
 
 @Mapper(componentModel = "spring")
-public interface QuizQuestionMapper {
+public interface QuestionMapper {
     QuestionDto fromModelToDto(Question question);
 
     @InheritInverseConfiguration

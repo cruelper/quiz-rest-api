@@ -1,11 +1,7 @@
 package ru.nuykin.quizrestapi.repository.cache;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
@@ -16,7 +12,7 @@ import ru.nuykin.quizrestapi.model.QuestionWithCategory;
 
 @Repository
 @RequiredArgsConstructor
-public class QuestionRedisCache {
+public class RedisQuestionRepository {
     private final String KEY = "QuizQuestionWithAnswersDto";
     private final ReactiveRedisOperations<String, Object> reactiveRedisOperations;
     private final ObjectMapper mapper = new ObjectMapper();

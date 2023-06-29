@@ -6,20 +6,20 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.nuykin.quizrestapi.dto.QuestionDto;
 import ru.nuykin.quizrestapi.mapper.QuestionWithCategoryMapper;
-import ru.nuykin.quizrestapi.repository.client.JServiceFeignClient;
-import ru.nuykin.quizrestapi.repository.cache.QuestionRedisCache;
+import ru.nuykin.quizrestapi.repository.client.JServiceQuestionRepository;
+import ru.nuykin.quizrestapi.repository.cache.RedisQuestionRepository;
 
 @Service
 @RequiredArgsConstructor
 public class JServiceService {
-    private final JServiceFeignClient jServiceFeignClient;
+    private final JServiceQuestionRepository jServiceQuestionRepository;
     private final QuestionWithCategoryMapper questionWithCategoryMapper;
-    private final QuestionRedisCache questionRedisCache;
+    private final RedisQuestionRepository redisQuestionRepository;
 
     public Flux<QuestionDto> findRandom(int count) {
-        return jServiceFeignClient.getRandomQuestion(count)
+        return jServiceQuestionRepository.getRandomQuestion(count)
                 .flatMap(questionDto -> {
-                    questionRedisCache.save(questionWithCategoryMapper.fromDtoToModel(questionDto)).subscribe();
+                    redisQuestionRepository.save(questionWithCategoryMapper.fromDtoToModel(questionDto)).subscribe();
                     return Mono.just(questionDto);
                 });
     }

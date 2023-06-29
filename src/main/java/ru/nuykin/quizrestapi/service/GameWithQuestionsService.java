@@ -15,13 +15,14 @@ import java.util.concurrent.ExecutionException;
 public interface GameWithQuestionsService {
     public Mono<GameStartResponseDto> startGame(Long userId, GameStartRequestDto gameStartRequestDto);
 
-    public Mono<QuestionWithCategory> getQuestion(Long gameId, Integer questionNumber);
+    public Mono<QuestionWithCategory> getQuestion(Long userId, Long gameId, Integer questionNumber);
 
     public Mono<CheckQuestionAnswerDto> checkQuestion(
+            Long userId,
             Long game_id,
             Integer question_number,
             CheckQuestionAnswerDto answer
     );
 
-    public Mono<GameFinishResponseDto> finishGame(Long gameId);
+    public Mono<GameFinishResponseDto> finishGame(Long userId, Long gameId);
 }

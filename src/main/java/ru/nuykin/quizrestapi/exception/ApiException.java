@@ -1,10 +1,15 @@
 package ru.nuykin.quizrestapi.exception;
 
-public class ApiException extends RuntimeException {
-    private String errorCode;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
-    public ApiException(String msg, String errorCode) {
+@Getter
+public class ApiException extends RuntimeException {
+    private Long timestamp;
+    private HttpStatus status;
+
+    public ApiException(String msg, HttpStatus status) {
         super(msg);
-        this.errorCode = errorCode;
+        this.status = status;
     }
 }

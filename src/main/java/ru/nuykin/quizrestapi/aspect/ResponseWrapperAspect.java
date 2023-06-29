@@ -8,13 +8,14 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import ru.nuykin.quizrestapi.exception.UnauthorizedException;
 
 @Aspect
-@ControllerAdvice
+@RestControllerAdvice
 public class ResponseWrapperAspect {
 
     @Getter
@@ -55,7 +56,7 @@ public class ResponseWrapperAspect {
         );
     }
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(UnauthorizedException.class)
     public Object handleException(RuntimeException exception) {
         return new ResponseEntity<>(Mono.just(ResponseWrapper.builder()
                 .code("500")

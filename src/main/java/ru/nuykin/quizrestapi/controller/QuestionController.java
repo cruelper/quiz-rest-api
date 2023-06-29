@@ -10,6 +10,7 @@ import ru.nuykin.quizrestapi.service.impl.JServiceService;
 import ru.nuykin.quizrestapi.mapper.QuestionWithCategoryMapper;
 import ru.nuykin.quizrestapi.service.QuestionWithCategoryService;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -35,9 +36,13 @@ public class QuestionController {
 
     @GetMapping("/random")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<QuestionDto> findRandom(@RequestParam(required = true) Integer count) {
+    public Mono<QuestionDto> findRandom(
+            @RequestParam(required = true, name = "min_difficulty") Integer minDifficulty,
+            @RequestParam(required = true, name = "max_difficulty") Integer maxDifficulty,
+            @RequestParam(required = true, name = "categories") List<Integer> categories
+    ) {
         if ((int)(Math.random()*100) % 2 == 0) {
-            return questionWithCategoryService.findRandom()
+            return questionWithCategoryService.findRandom(minDifficulty, maxDifficulty, categories)
                     .map(questionWithCategoryMapper::fromModelToDto);
         }
         return jServiceService.findRandom(1).last();

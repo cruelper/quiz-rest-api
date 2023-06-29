@@ -37,4 +37,7 @@ public class GameQuestion {
 
     @Column("is_correct_answer")
     private Boolean isCorrectAnswer;
+
+    @Column("is_answer_given")
+    private Boolean isAnswerGiven;
 }

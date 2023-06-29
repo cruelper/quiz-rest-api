@@ -7,7 +7,6 @@ import reactor.core.publisher.Mono;
 import ru.nuykin.quizrestapi.dto.UserDto;
 import ru.nuykin.quizrestapi.dto.request.AuthRequestDto;
 import ru.nuykin.quizrestapi.dto.response.AuthResponseDto;
-import ru.nuykin.quizrestapi.mapper.QuizCategoryMapper;
 import ru.nuykin.quizrestapi.mapper.UserMapper;
 import ru.nuykin.quizrestapi.model.User;
 import ru.nuykin.quizrestapi.security.SecurityService;
@@ -21,7 +20,6 @@ public class UserController {
     private final SecurityService securityService;
     private final UserService userService;
     private final UserMapper userMapper;
-
 
     @PostMapping("/register")
     public Mono<UserDto> register(@RequestBody UserDto dto) {

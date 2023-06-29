@@ -9,7 +9,7 @@ import ru.nuykin.quizrestapi.dto.QuestionDto;
 
 @ReactiveFeignClient(url = "http://jservice.io/api/", name = "jservice")
 @Component
-public interface JServiceFeignClient {
+public interface JServiceQuestionRepository {
     @GetMapping("/random")
     Flux<QuestionDto> getRandomQuestion(@RequestParam(value = "count") Integer count);
 }

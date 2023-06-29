@@ -7,11 +7,12 @@ import lombok.Data;
 import ru.nuykin.quizrestapi.dto.CheckQuestionAnswerDto;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class GameFinishResponseDto {
     private Long gameId;
-    private List<Boolean> answers;
+    private List<Map.Entry<Integer, Boolean>> answers;
 }
